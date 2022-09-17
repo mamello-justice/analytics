@@ -1,0 +1,70 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/chrome-extension/src",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nrwl/web:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "outputPath": "dist/apps/chrome-extension",
+        "compiler": "babel",
+        "index": "apps/chrome-extension/src/index.html",
+        "baseHref": "/",
+        "main": "apps/chrome-extension/src/main.ts",
+        "polyfills": "apps/chrome-extension/src/polyfills.ts",
+        "tsConfig": "apps/chrome-extension/tsconfig.app.json",
+        "assets": [
+          "apps/chrome-extension/src/favicon.ico",
+          "apps/chrome-extension/src/assets"
+        ],
+        "styles": ["apps/chrome-extension/src/styles.scss"],
+        "scripts": []
+      },
+      "configurations": {
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/chrome-extension/src/environments/environment.ts",
+              "with": "apps/chrome-extension/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/web:dev-server",
+      "options": {
+        "buildTarget": "chrome-extension:build"
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "chrome-extension:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/chrome-extension/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/chrome-extension"],
+      "options": {
+        "jestConfig": "apps/chrome-extension/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  }
+}
